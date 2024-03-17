@@ -1,3 +1,11 @@
+<div align="center" >
+
+<h1 style="color:red; font-size:48px;">!!!! Project Archived 📦 !!!!</h1>
+
+> This project has been archived. Thank you to everyone who contributed! 🙌😔
+</div>
+
+
 <h1 align="center">Welcome to wechat-chatgpt 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
@@ -7,86 +15,184 @@
   <a href="https://twitter.com/fuergaosi" target="_blank">
     <img alt="Twitter: fuergaosi" src="https://img.shields.io/twitter/follow/fuergaosi.svg?style=social" />
   </a>
+  </a>
+  <a href="https://discord.gg/8fXNrxwUJH" target="blank">
+    <img src="https://img.shields.io/discord/1058994816446369832?label=Join%20Community&logo=discord&style=flat-square" alt="join discord community of github profile readme generator"/>
+  </a>
 </p>
 
-> Use ChatGPT On Wechat via wechaty
+> Use ChatGPT On Wechat via wechaty  
+> English | [中文文档](README_ZH.md)
 
-### 🏠 [Homepage](https://github.com/fuergaosi233/wechat-chatgpt)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/dMLG70?referralCode=bIYugQ)
 
-## 🌟 Feature
-- [x] Use ChatGPT On Wechat via wechaty
-- [x] Support OpenAI Accounts Pool
-- [x] Support use proxy to login
-- [X] Simulated at message receive
-- [X] Add conversation Support (Everyone will have their own session)
-- [X] Add Dockerfile
-- [ ] Publish to Docker.hub
-- [ ] Add Railray deploy
-- [ ] Auto Reload OpenAI Accounts Pool
+## 🌟 Features
+
+- Interact with WeChat and ChatGPT:
+   - Use ChatGPT on WeChat with [wechaty](https://github.com/wechaty/wechaty) and [Official API](https://openai.com/blog/introducing-chatgpt-and-whisper-apis)
+   - Add conversation support
+   - Support command setting
+
+- Deployment and configuration options:
+   - Add Dockerfile, deployable with [docker](#use-with-docker)
+   - Support deployment using [docker compose](#use-with-docker-compose)
+   - Support [Railway](#use-with-railway) and [Fly.io](#use-with-flyio) deployment
+
+- Other features:
+   - Support [Dall·E](https://labs.openai.com/)
+   - Support [whisper](https://openai.com/blog/introducing-chatgpt-and-whisper-apis)
+   - Support setting prompt
+   - Support proxy (in development)
+
+## 🚀 Usage
+- [Use with Railway](#use-with-railway)(PaaS, Free, Stable, ✅Recommended)
+- [Use with Fly.io](#use-with-flyio)(Paas, Free, ✅Recommended)
+- [Use with docker](#use-with-docker)(Self-hosted, Stable, ✅Recommended)
+- [Use with docker compose](#use-with-docker-compose)(Self-hosted, Stable, ✅Recommended)
+- [Use with nodejs](#use-with-nodejs)(Self-hosted)
+
+## Use with Railway
+> Railway offers $5 or 500 hours of runtime per month
+1. Click the [Railway](https://railway.app/template/dMLG70?referralCode=bIYugQ) button to go to the Railway deployment page
+2. Click the `Deploy Now` button to enter the Railway deployment page
+3. Fill in the repository name and `OPENAI_API_KEY` (need to link GitHub account)
+4. Click the `Deploy` button
+5. Click the `View Logs` button and wait for the deployment to complete
+
+## Use with Fly.io
+> Please allocate 512MB memory for the application to meet the application requirements
+
+> fly.io offers free bills up to $5(Free Allowances 3 256MB are not included in the bill)
+1. Install [flyctl](https://fly.io/docs/getting-started/installing-flyctl/)
+   ```shell
+    # macOS
+    brew install flyctl
+    # Windows
+    scoop install flyctl
+    # Linux
+    curl https://fly.io/install.sh | sh
+   ```
+2. Clone the project and enter the project directory
+   ```shell
+   git clone https://github.com/fuergaosi233/wechat-chatgpt.git && cd wechat-chatgpt
+   ```
+3. Create a new app
+   ```shell
+   ➜ flyctl launch 
+    ? Would you like to copy its configuration to the new app? No
+    ? App Name (leave blank to use an auto-generated name): <YOUR APP NAME>
+    ? Select region: <YOUR CHOOSE REGION>
+    ? Would you like to setup a Postgresql database now? No
+    ? Would you like to deploy now? No
+   ```
+4. Configure the environment variables
+   ```shell
+   flyctl secrets set OPENAI_API_KEY="<YOUR OPENAI API KEY>" MODEL="<CHATGPT-MODEL>"
+   ```
+5. Deploy the app
+   ```shell
+   flyctl deploy
+   ```
 
 ## Use with docker
 
 ```sh
-cp config.yaml.example config.yaml
-# Change Config.yaml
-docker build -t wechat-chatgpt .
-docker run -v $(pwd)/config.yaml:/app/config.yaml wechat-chatgpt
+# pull image
+docker pull holegots/wechat-chatgpt
+# run container
+docker run -d --name wechat-chatgpt \
+    -e OPENAI_API_KEY=<YOUR OPENAI API KEY> \
+    -e MODEL="gpt-3.5-turbo" \
+    -e CHAT_PRIVATE_TRIGGER_KEYWORD="" \
+    -v $(pwd)/data:/app/data/wechat-assistant.memory-card.json \
+    holegots/wechat-chatgpt:latest
+# View the QR code to log in to wechat
+docker logs -f wechat-chatgpt
 ```
-## Install
+> How to get OPENAI API KEY? [Click here](https://platform.openai.com/account/api-keys)
+
+## Use with docker compose
 
 ```sh
-npm install && poetry install
+# Copy the configuration file according to the template
+cp .env.example .env
+# Edit the configuration file
+vim .env
+# Start the container
+docker-compose up -d
+# View the QR code to log in to wechat
+docker logs -f wechat-chatgpt
 ```
 
-## Usage with manual
-### Copy config
-You need copy config file for setting up your project.
-```sh
-cp config.yaml.example config.yaml
-```
-### Get and config Openai account
-> If you don't have this OpenAI account and you live in China, you can get it [here](https://mirror.xyz/boxchen.eth/9O9CSqyKDj4BKUIil7NC1Sa1LJM-3hsPqaeW_QjfFBc).
-#### **A：Use account and password**
-You need get OpenAI account and password.
-Your config.yaml should be like this:
-```yaml
-chatGPTAccountPool:
-  - email: <your email>
-    password: <your password>
-```
-⚠️ Pls make sure your network can log in to OpenAI, and if you fail to login in try setting up a proxy or using SessionToken.  
-**Setup proxy:**
-```sh
-export http_proxy=<Your Proxy>
-```
-#### **B: Use Session Token**
-If you cant use email and password to login your openai account or your network can't login, you can use session token. You need to follow these steps:  
-1. Go to https://chat.openai.com/chat and log in or sign up.
-2. Open dev tools.
-3. Open Application > Cookies.
-![image](docs/images/session-token.png)
-4. Copy the value for __Secure-next-auth.session-token and save it to your config
-Your config.yaml should be like this:
-```yaml
-chatGPTAccountPool:
-  - session_token: <your session_token>
-```
+## Use with nodejs
 
-### Start Project
+> You need NodeJS 18.0.0 version and above
+
 ```sh
+# Clone the project
+git clone https://github.com/fuergaosi233/wechat-chatgpt.git && cd wechat-chatgpt
+# Install dependencies
+npm install
+# Copy the configuration file according to the template
+cp .env.example .env
+# Edit the configuration file
+vim .env
+# Start project
 npm run dev
 ```
-If you are logging in for the first time, then you need to scan the qrcode.
-## Author
 
-👤 **holegots**
+> Please make sure your WeChat account can log in [WeChat on web](https://wx.qq.com/)
 
-* Twitter: [@fuergaosi](https://twitter.com/fuergaosi)
-* Github: [@fuergaosi233](https://github.com/fuergaosi233)
+## 📝 Environment Variables
+
+| name                         | description                                                                                                                                                                          |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| API                          | API endpoint of ChatGPT                                                                                                                                                              |
+| OPENAI_API_KEY               | [create new secret key](https://platform.openai.com/account/api-keys)                                                                                                                |
+| MODEL                        | ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.                                                                                          |
+| TEMPERATURE                  | What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. |
+| CHAT_TRIGGER_RULE            | Private chat triggering rules.                                                                                                                                                       |
+| DISABLE_GROUP_MESSAGE        | Prohibited to use ChatGPT in group chat.                                                                                                                                             |
+| CHAT_PRIVATE_TRIGGER_KEYWORD | Keyword to trigger ChatGPT reply in WeChat private chat                                                                                                                              |
+| BLOCK_WORDS                  | Chat blocker words, (works for both private and group chats, Use, Split)                                                                                                             |
+| CHATGPT_BLOCK_WORDS          | The blocked words returned by ChatGPT(works for both private and group chats, Use, Split)                                                                                            |
+
+## 📝 Using Custom ChatGPT API
+
+> https://github.com/fuergaosi233/openai-proxy
+
+```shell
+# Clone the project
+git clone https://github.com/fuergaosi233/openai-proxy
+# Install dependencies
+npm install && npm install -g wrangler && npm run build
+# Deploy to CloudFlare Workers
+npm run deploy
+# Custom domain (optional)
+Add `Route` to `wrangler.toml`
+routes = [
+    { pattern = "Your Custom Domain", custom_domain = true },
+]
+```
+
+## ⌨️ Commands
+> Enter in the WeChat chat box
+```shell
+/cmd help # Show help
+/cmd prompt <PROMPT> # Set prompt
+/cmd clear # Clear all sessions since last boot
+```
+
+## ✨ Contributor
+
+<a href="https://github.com/fuergaosi233/wechat-chatgpt/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=fuergaosi233/wechat-chatgpt" />
+</a>
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/fuergaosi233/wechat-chatgpt/issues). 
+Contributions, issues and feature requests are welcome!<br />Feel free to
+check [issues page](https://github.com/fuergaosi233/wechat-chatgpt/issues).
 
 ## Show your support
 
